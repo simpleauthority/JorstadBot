@@ -8,10 +8,10 @@ abstract class TextGeneratorModule(fileName: String) {
     private val components = HashMap<String, List<String>>()
 
     init {
-        val kill = Json.deserialize(javaClass.getResourceAsStream("/${fileName}"))
+        val node = Json.deserialize(javaClass.getResourceAsStream("/${fileName}"))
 
-        kill.get("templates").forEach { templates.add(it.textValue()) }
-        kill.get("components").fields().forEach { component ->
+        node.get("templates").forEach { templates.add(it.textValue()) }
+        node.get("components").fields().forEach { component ->
             val list = ArrayList<String>()
             component.value.forEach { entry -> list.add(entry.textValue()) }
             components[component.key] = list
