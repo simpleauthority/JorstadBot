@@ -1,5 +1,6 @@
 package dev.jacobandersen.jorstad
 
+import dev.jacobandersen.jorstad.data.DataManager
 import dev.jacobandersen.jorstad.manager.CommandManager
 import dev.jacobandersen.jorstad.manager.DiscordManager
 import dev.jacobandersen.jorstad.util.Log
@@ -8,9 +9,10 @@ fun main() {
     JorstadBot().run()
 }
 
-class JorstadBot() {
-    private val discord = DiscordManager()
-    private val command = CommandManager()
+class JorstadBot {
+    val discord = DiscordManager()
+    val command = CommandManager(this)
+    val data = DataManager()
 
     fun run() {
         Log.info("Booting JorstadBot...")

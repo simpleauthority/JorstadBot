@@ -1,0 +1,52 @@
+{
+  "templates": [
+    "Hands {user} a {adjective} {type} taco filled with {filling} and topped with {topping}, {topping}, and {topping}!"
+  ],
+  "components": {
+    "adjective": [
+      "delicious",
+      "scrumptious",
+      "tasty",
+      "super amazing",
+      "mouthwatering",
+      "seriously appetizing",
+      "flavorsome",
+      "delectable",
+      "succulent",
+      "very enjoyable",
+      "very palatable",
+      "spicy",
+      "mild"
+    ],
+    "type": [
+      "soft-shell",
+      "hard-shell"
+    ],
+    "filling": [
+      "carnitas",
+      "beef",
+      "fish",
+      "chicken",
+      "vegan meat",
+      "various meats"
+    ],
+    "topping": [
+      "salsa",
+      "sour cream",
+      "cheese",
+      "beans",
+      "hot sauce",
+      "coriander",
+      "lettuce",
+      "tomato",
+      "pico de gallo",
+      "guacamole",
+      "lime juice",
+      "sweet onion",
+      "rice",
+      "jalapeño",
+      "scallion",
+      "potato"
+    ]
+  }
+}
