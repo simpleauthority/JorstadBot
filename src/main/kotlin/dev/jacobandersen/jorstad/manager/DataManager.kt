@@ -1,8 +1,8 @@
-package dev.jacobandersen.jorstad.data
+package dev.jacobandersen.jorstad.manager
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import dev.jacobandersen.jorstad.data.textcommands.TextCommandDam
+import dev.jacobandersen.jorstad.data.text_commands.TextCommandDam
 import dev.jacobandersen.jorstad.util.Log
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.SqlObjectPlugin

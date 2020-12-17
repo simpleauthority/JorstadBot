@@ -1,6 +1,6 @@
 package dev.jacobandersen.jorstad
 
-import dev.jacobandersen.jorstad.data.DataManager
+import dev.jacobandersen.jorstad.manager.DataManager
 import dev.jacobandersen.jorstad.manager.CommandManager
 import dev.jacobandersen.jorstad.manager.DiscordManager
 import dev.jacobandersen.jorstad.util.Log
