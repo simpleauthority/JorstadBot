@@ -2,6 +2,7 @@ package dev.jacobandersen.jorstad.manager
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUserDam
 import dev.jacobandersen.jorstad.data.text_commands.TextCommandDam
 import dev.jacobandersen.jorstad.util.Log
 import org.jdbi.v3.core.Jdbi
@@ -12,6 +13,7 @@ class DataManager {
     private val hikari: HikariDataSource
     val jdbi: Jdbi
     val textCommand: TextCommandDam
+    val privilegedUser: PrivilegedUserDam
 
     init {
         Log.info("Configuring data storage system...")
@@ -27,8 +29,10 @@ class DataManager {
 
         Log.info("Creating data accessors...")
         textCommand = TextCommandDam(this)
+        privilegedUser = PrivilegedUserDam(this)
 
-        Log.info("Creating data containers...")
+        Log.info("Creating data containers (if necessary)...")
         textCommand.createContainer()
+        privilegedUser.createContainer()
     }
 }
