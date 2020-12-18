@@ -17,7 +17,12 @@ class RoleDefaultSetCommand(private val bot: JorstadBot) : TerminalSubcommand {
             .handler { handler ->
                 val guild = bot.discord.api.getGuildFromCtx(handler) ?: return@handler
                 val role = handler.resolveDiscordRoleFromArgument(guild) ?: return@handler
-                bot.config.setDefaultUserRole(guild.id, role.id.toString())
+
+                bot.config.updateGuildConfig(guild.id) {
+                    it.defaultUserRole = role.id.toString()
+                    return@updateGuildConfig it
+                }
+
                 handler.sender.sendSuccessMessage("Default guild role set to ${role.id}")
             }
     }

@@ -12,8 +12,9 @@ class RoleDefaultCommand(private val bot: JorstadBot) : BaseSubcommand, Terminal
     override fun children(builder: Command.Builder<JavacordCommandSender>): List<Command.Builder<JavacordCommandSender>> {
         val base = terminal(builder)
         val defaultSet = RoleDefaultSetCommand(bot).terminal(base)
+        val defaultUnset = RoleDefaultUnsetCommand(bot).terminal(base)
 
-        return listOf(base, defaultSet)
+        return listOf(base, defaultSet, defaultUnset)
     }
 
     override fun terminal(builder: Command.Builder<JavacordCommandSender>): Command.Builder<JavacordCommandSender> {
@@ -21,8 +22,8 @@ class RoleDefaultCommand(private val bot: JorstadBot) : BaseSubcommand, Terminal
             .argument(StaticArgument.of("default"))
             .handler { handler ->
                 val guild = bot.discord.api.getGuildFromCtx(handler) ?: return@handler
-                var defaultRole = bot.config.getDefaultUserRole(guild.id)
-                defaultRole = if (defaultRole.isEmpty()) { "not set" } else { defaultRole }
+                val config = bot.config.readGuildConfig(guild.id) ?: return@handler
+                val defaultRole = config.defaultUserRole ?: "not set"
 
                 handler.sender.sendMessage("The default role for this server is $defaultRole.")
             }

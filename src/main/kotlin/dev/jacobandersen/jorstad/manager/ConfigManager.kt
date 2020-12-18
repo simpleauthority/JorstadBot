@@ -1,8 +1,11 @@
 package dev.jacobandersen.jorstad.manager
 
+import dev.jacobandersen.jorstad.config.GuildConfig
 import dev.jacobandersen.jorstad.util.Log
 import org.spongepowered.configurate.BasicConfigurationNode
 import org.spongepowered.configurate.jackson.JacksonConfigurationLoader
+import org.spongepowered.configurate.kotlin.extensions.get
+import org.spongepowered.configurate.kotlin.objectMapperFactory
 import java.io.File
 import java.lang.RuntimeException
 import java.nio.file.Files
@@ -18,17 +21,18 @@ class ConfigManager {
         val diskResource = File("config.json")
         if (!diskResource.exists()) {
             Log.info("Copying default configuration file...")
-            Files.copy(
-                javaClass.getResourceAsStream("/config.json"),
-                diskResource.toPath()
-            )
-            Log.info("Default configuration copied.")
+            Files.copy(javaClass.getResourceAsStream("/config.json"), diskResource.toPath())
         }
 
         Log.info("Loading configuration file...")
         loader = JacksonConfigurationLoader
             .builder()
             .path(Path.of("config.json"))
+            .defaultOptions { options ->
+                options.serializers { builder ->
+                    builder.registerAnnotatedObjects(objectMapperFactory())
+                }
+            }
             .build()
 
         if (!loader.canLoad()) {
@@ -38,24 +42,57 @@ class ConfigManager {
 
         root = loader.load()
         guildsNode = root.node("guilds")
-        Log.info("Configuration loaded.")
     }
 
-    fun getDefaultUserRole(guildId: Long): String {
-        return guildsNode.node(guildId).node("defaultUserRole").getString("")
+    /**
+     * Checks if a node with path guilds.<guildId> is not "virtual"
+     *
+     * A "virtual" node does not actually exist.
+     */
+    fun hasGuildConfig(guildId: Long): Boolean {
+        return !root.node("guilds").node(guildId).virtual()
     }
 
-    fun setDefaultUserRole(guildId: Long, defaultUserRole: String) {
-        guildsNode.node(guildId).node("defaultUserRole").set(defaultUserRole)
-        save()
+    /**
+     * Creates a fresh guild config at the guilds.<guildId> path if
+     * one does not already exist.
+     */
+    fun createGuildConfig(guildId: Long) {
+        if (hasGuildConfig(guildId)) return
+        setGuildConfig(guildId, GuildConfig(null))
     }
 
-    fun deleteGuild(guildId: Long) {
-        guildsNode.node(guildId).set(null)
-        save()
+    /**
+     * Reads the guild config located at the guilds.<guildId> path if
+     * one exists.
+     */
+    fun readGuildConfig(guildId: Long): GuildConfig? {
+        if (!hasGuildConfig(guildId)) return null
+        return root.node("guilds").node(guildId).get(GuildConfig::class)
     }
 
-    private fun save() {
+    /**
+     * Updates one or more fields located at the guilds.<guildId> path if
+     * a config exists there.
+     */
+    fun updateGuildConfig(guildId: Long, mutator: (config: GuildConfig) -> GuildConfig) {
+        val config = readGuildConfig(guildId) ?: return
+        setGuildConfig(guildId, mutator.invoke(config))
+    }
+
+    /**
+     * Sets the guild config located at the guilds.<guildId> path to null,
+     * effectively deleting it from the configuration.
+     */
+    fun deleteGuildConfig(guildId: Long) {
+        setGuildConfig(guildId, null)
+    }
+
+    /**
+     * Sets the guildConfig located at the guilds.<guildId> path.
+     */
+    private fun setGuildConfig(guildId: Long, guildConfig: GuildConfig?) {
+        root.node("guilds").node(guildId).set(guildConfig)
         loader.save(root)
     }
 }

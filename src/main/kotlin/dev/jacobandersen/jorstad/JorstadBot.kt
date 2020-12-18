@@ -18,12 +18,37 @@ class JorstadBot {
 
     fun run() {
         Log.info("Booting JorstadBot...")
+        handleShutdown()
+        handleLogin()
+        registerCommands()
+        checkGuildConfigs()
+        Log.info("JorstadBot is now running.")
+    }
+
+    private fun handleShutdown() {
         Log.info("Registering shutdown hook...")
         Runtime.getRuntime().addShutdownHook(Thread { discord.logout() })
-        Log.info("Registered shutdown hook.")
+    }
+
+    private fun handleLogin() {
         discord.login()
         Log.info("JorstadBot invite link is: ${discord.getInvite()}")
+    }
+
+    private fun registerCommands() {
+        Log.info("Registering commands...")
         command.registerCommands(discord)
-        Log.info("JorstadBot is now running.")
+    }
+
+    private fun checkGuildConfigs() {
+        Log.info("Checking guild configs...")
+        discord.api.servers.forEach { server ->
+            val id = server.id
+
+            if (!config.hasGuildConfig(id)) {
+                Log.info("Guild $id has no associated configuration. Creating now...")
+                config.createGuildConfig(id)
+            }
+        }
     }
 }

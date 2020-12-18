@@ -15,7 +15,12 @@ class RoleDefaultUnsetCommand(private val bot: JorstadBot) : TerminalSubcommand 
             .argument(StaticArgument.of("unset"))
             .handler { handler ->
                 val guild = bot.discord.api.getGuildFromCtx(handler) ?: return@handler
-                bot.config.setDefaultUserRole(guild.id, "")
+
+                bot.config.updateGuildConfig(guild.id) {
+                    it.defaultUserRole = null
+                    return@updateGuildConfig it
+                }
+
                 handler.sender.sendSuccessMessage("Default guild role unset.")
             }
     }
