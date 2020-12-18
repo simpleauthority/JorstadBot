@@ -113,7 +113,7 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,gradle
 
 # testing data folder
-data/
+/data/
 
 # testing config file
 /config.json
