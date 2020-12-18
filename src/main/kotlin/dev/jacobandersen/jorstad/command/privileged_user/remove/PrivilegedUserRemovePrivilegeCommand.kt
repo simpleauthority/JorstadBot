@@ -19,7 +19,7 @@ class PrivilegedUserRemovePrivilegeCommand(private val bot: JorstadBot) : Termin
                 val guild = bot.discord.api.resolveGuildFromContext(handler) ?: return@handler
                 val target = handler.resolveDiscordUserFromArgument(guild) ?: return@handler
 
-                if (handler.isSenderGuildOwner("You can't remove the server owner's privileges. That is when Bad Things:tm: occur.")) return@handler
+                if (handler.isGuildOwner(target,"You can't remove the server owner's privileges. That is when Bad Things:tm: occur.")) return@handler
 
                 val db = bot.data.privilegedUser
                 if (db.doesNotExist(handler.sender, guild.id, target.id)) return@handler

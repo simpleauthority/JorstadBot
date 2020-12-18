@@ -9,13 +9,11 @@ import org.javacord.api.entity.permission.Role
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
 
-private const val numberHint = "Make sure you're using the numbers and not a ping."
 private const val correctHint = "Is it correct?"
 
-fun CommandContext<JavacordCommandSender>.isSenderGuildOwner(ifYes: String?): Boolean {
-    val sender = this.sender
+fun CommandContext<JavacordCommandSender>.isGuildOwner(user: User, ifYes: String?): Boolean {
     val server = sender.event.server.orElse(null) ?: return false
-    val isOwner = sender.author.id == server.ownerId
+    val isOwner = user.id == server.ownerId
 
     if (isOwner) {
         if (ifYes != null) sender.sendErrorMessage(ifYes)
@@ -24,9 +22,18 @@ fun CommandContext<JavacordCommandSender>.isSenderGuildOwner(ifYes: String?): Bo
     return isOwner
 }
 fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: Server): Role? {
-    val roleId = this.get<String>("role").toLongOrNull()
+    val rawRole = this.get<String>("role")
+    val roleId: Long?
+
+    val regex = Regex("<@&(\\d+)>")
+    roleId = if (regex.matches(rawRole)) {
+        regex.matchEntire(rawRole)?.groupValues?.get(1)?.toLongOrNull()
+    } else {
+        rawRole.toLongOrNull()
+    }
+
     if (roleId == null) {
-        this.sender.sendErrorMessage("That looks like an invalid role ID. $numberHint")
+        this.sender.sendErrorMessage("That looks like an invalid role ID.")
         return null
     }
 
@@ -39,9 +46,18 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: 
 }
 
 fun CommandContext<JavacordCommandSender>.resolveDiscordUserFromArgument(guild: Server): User? {
-    val userId = this.get<String>("user").toLongOrNull()
+    val rawUser = this.get<String>("user")
+    val userId: Long?
+
+    val regex = Regex("<@!(\\d+)>")
+    userId = if (regex.matches(rawUser)) {
+        regex.matchEntire(rawUser)?.groupValues?.get(1)?.toLongOrNull()
+    } else {
+        rawUser.toLongOrNull()
+    }
+
     if (userId == null) {
-        this.sender.sendErrorMessage("That looks like an invalid user ID. $numberHint")
+        this.sender.sendErrorMessage("That looks like an invalid user.")
         return null
     }
 
