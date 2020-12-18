@@ -7,10 +7,7 @@ import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.TerminalSubcommand
 import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
-import dev.jacobandersen.jorstad.ext.doesNotExist
-import dev.jacobandersen.jorstad.ext.resolveDiscordUserFromArgument
-import dev.jacobandersen.jorstad.ext.resolveGuildFromContext
-import dev.jacobandersen.jorstad.ext.resolvePrivilegesFromArgument
+import dev.jacobandersen.jorstad.ext.*
 
 class PrivilegedUserRemovePrivilegeCommand(private val bot: JorstadBot) : TerminalSubcommand {
     override fun terminal(builder: Command.Builder<JavacordCommandSender>): Command.Builder<JavacordCommandSender> {
@@ -21,6 +18,8 @@ class PrivilegedUserRemovePrivilegeCommand(private val bot: JorstadBot) : Termin
             .handler { handler ->
                 val guild = bot.discord.api.resolveGuildFromContext(handler) ?: return@handler
                 val target = handler.resolveDiscordUserFromArgument(guild) ?: return@handler
+
+                if (handler.isSenderGuildOwner("You can't remove the server owner's privileges. That is when Bad Things:tm: occur.")) return@handler
 
                 val db = bot.data.privilegedUser
                 if (db.doesNotExist(handler.sender, guild.id, target.id)) return@handler

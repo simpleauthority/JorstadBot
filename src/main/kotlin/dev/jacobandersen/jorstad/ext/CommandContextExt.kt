@@ -12,6 +12,17 @@ import org.javacord.api.entity.user.User
 private const val numberHint = "Make sure you're using the numbers and not a ping."
 private const val correctHint = "Is it correct?"
 
+fun CommandContext<JavacordCommandSender>.isSenderGuildOwner(ifYes: String?): Boolean {
+    val sender = this.sender
+    val server = sender.event.server.orElse(null) ?: return false
+    val isOwner = sender.author.id == server.ownerId
+
+    if (isOwner) {
+        if (ifYes != null) sender.sendErrorMessage(ifYes)
+    }
+
+    return isOwner
+}
 fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: Server): Role? {
     val roleId = this.get<String>("role").toLongOrNull()
     if (roleId == null) {
@@ -20,7 +31,6 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: 
     }
 
     val role = guild.getRoleById(roleId).orElse(null)
-    Log.info(role.toString())
     return if (role != null) { role }
     else {
         this.sender.sendErrorMessage("I couldn't find a role with that ID. $correctHint")
