@@ -45,12 +45,10 @@ class ConfigManager {
     }
 
     /**
-     * Checks if a node with path guilds.<guildId> is not "virtual"
-     *
-     * A "virtual" node does not actually exist.
+     * Checks if the guilds node has a child <guildId>.
      */
     fun hasGuildConfig(guildId: Long): Boolean {
-        return !root.node("guilds").node(guildId).virtual()
+        return root.node("guilds").hasChild(guildId.toString())
     }
 
     /**
@@ -68,7 +66,7 @@ class ConfigManager {
      */
     fun readGuildConfig(guildId: Long): GuildConfig? {
         if (!hasGuildConfig(guildId)) return null
-        return root.node("guilds").node(guildId).get(GuildConfig::class)
+        return root.node("guilds").node(guildId.toString()).get(GuildConfig::class)
     }
 
     /**
@@ -92,7 +90,7 @@ class ConfigManager {
      * Sets the guildConfig located at the guilds.<guildId> path.
      */
     private fun setGuildConfig(guildId: Long, guildConfig: GuildConfig?) {
-        root.node("guilds").node(guildId).set(guildConfig)
+        root.node("guilds").node(guildId.toString()).set(guildConfig)
         loader.save(root)
     }
 }
