@@ -1,7 +1,6 @@
 package dev.jacobandersen.jorstad.listeners
 
 import dev.jacobandersen.jorstad.JorstadBot
-import dev.jacobandersen.jorstad.util.Log
 import org.javacord.api.event.message.MessageCreateEvent
 import org.javacord.api.listener.message.MessageCreateListener
 

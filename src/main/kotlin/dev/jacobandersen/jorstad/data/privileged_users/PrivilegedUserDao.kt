@@ -7,7 +7,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface PrivilegedUserDao {
-    @SqlUpdate("create table privileged_users (id integer not null, guild_id integer not null, user_id integer not null, privileges text not null, constraint privileged_users_pk primary key (id autoincrement));")
+    @SqlUpdate("create table if not exists privileged_users (id integer not null, guild_id integer not null, user_id integer not null, privileges text not null, constraint privileged_users_pk primary key (id autoincrement));")
     fun createContainer()
 
     @SqlQuery("select exists(select 1 from privileged_users where guild_id = :guild_id and user_id = :user_id)")

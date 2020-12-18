@@ -1,5 +1,6 @@
 package dev.jacobandersen.jorstad
 
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
 import dev.jacobandersen.jorstad.manager.DataManager
 import dev.jacobandersen.jorstad.manager.CommandManager
 import dev.jacobandersen.jorstad.manager.ConfigManager
@@ -22,6 +23,7 @@ class JorstadBot {
         handleLogin()
         registerCommands()
         checkGuildConfigs()
+        checkGuildOwnersPrivileged()
         Log.info("JorstadBot is now running.")
     }
 
@@ -48,6 +50,16 @@ class JorstadBot {
             if (!config.hasGuildConfig(id)) {
                 Log.info("Guild $id has no associated configuration. Creating now...")
                 config.createGuildConfig(id)
+            }
+        }
+    }
+
+    private fun checkGuildOwnersPrivileged() {
+        Log.info("Checking that guild owners are privileged...")
+        discord.api.servers.forEach { server ->
+            val db = data.privilegedUser
+            if (!db.privilegedUserExists(server.id, server.ownerId)) {
+                db.addPrivilegedUser(server.id, server.ownerId, listOf(PrivilegedUser.Privilege.ALL))
             }
         }
     }
