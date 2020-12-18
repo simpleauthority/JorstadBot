@@ -6,7 +6,7 @@ import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.BaseSubcommand
 import dev.jacobandersen.jorstad.command.api.TerminalSubcommand
-import dev.jacobandersen.jorstad.ext.getGuildFromCtx
+import dev.jacobandersen.jorstad.ext.resolveGuildFromContext
 
 class RoleDefaultCommand(private val bot: JorstadBot) : BaseSubcommand, TerminalSubcommand {
     override fun children(builder: Command.Builder<JavacordCommandSender>): List<Command.Builder<JavacordCommandSender>> {
@@ -21,7 +21,7 @@ class RoleDefaultCommand(private val bot: JorstadBot) : BaseSubcommand, Terminal
         return builder
             .argument(StaticArgument.of("default"))
             .handler { handler ->
-                val guild = bot.discord.api.getGuildFromCtx(handler) ?: return@handler
+                val guild = bot.discord.api.resolveGuildFromContext(handler) ?: return@handler
                 val config = bot.config.readGuildConfig(guild.id) ?: return@handler
                 val defaultRole = config.defaultUserRole ?: "not set"
 

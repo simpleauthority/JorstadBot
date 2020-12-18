@@ -6,10 +6,12 @@ import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.BasicCommand
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
 
 class ForgetCommand(private val bot: JorstadBot) : BasicCommand() {
     override fun construct(manager: JavacordCommandManager<JavacordCommandSender>): List<Command<JavacordCommandSender>> {
         return listOf(manager.commandBuilder("forget")
+            .permission(PrivilegedUser.Privilege.REMEMBER_FORGET_COMMAND.permission())
             .argument(StringArgument.single("name"))
             .handler {
                 val guildId = it.sender.event.server.orElse(null)?.id ?: return@handler

@@ -6,8 +6,12 @@ import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.*
+import dev.jacobandersen.jorstad.command.privileged_user.PrivilegedUserCommand
 import dev.jacobandersen.jorstad.command.role.RoleCommand
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
+import dev.jacobandersen.jorstad.ext.resolveGuildFromSender
 import dev.jacobandersen.jorstad.util.Log
+import java.util.function.BiFunction
 import java.util.function.Function
 
 class CommandManager(private val bot: JorstadBot) {
@@ -15,12 +19,11 @@ class CommandManager(private val bot: JorstadBot) {
 
     fun registerCommands(discord: DiscordManager) {
         initialize(discord)
-        registerCommand(KillCommand().construct(manager))
-        registerCommand(LartCommand().construct(manager))
-        registerCommand(TacoCommand().construct(manager))
-        registerCommand(RememberCommand(bot).construct(manager))
-        registerCommand(ForgetCommand(bot).construct(manager))
-        registerCommand(RoleCommand(bot).construct(manager))
+        listOf(
+            KillCommand(), LartCommand(), TacoCommand(),
+            RememberCommand(bot), ForgetCommand(bot),
+            RoleCommand(bot), PrivilegedUserCommand(bot)
+        ).forEach { registerCommand(it.construct(manager)) }
     }
 
     private fun initialize(discord: DiscordManager) {
@@ -31,7 +34,11 @@ class CommandManager(private val bot: JorstadBot) {
             Function.identity(),
             Function.identity(),
             { "!" },
-            null
+            BiFunction { sender, perm ->
+                val guild = bot.discord.api.resolveGuildFromSender(sender) ?: return@BiFunction false
+                val privilegedUser = bot.data.privilegedUser.findPrivilegedUser(guild.id, sender.author.id) ?: return@BiFunction false
+                return@BiFunction PrivilegedUser.Privilege.fromString(perm).hasPermission(privilegedUser)
+            }
         )
     }
 

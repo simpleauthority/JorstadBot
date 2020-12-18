@@ -2,6 +2,9 @@ package dev.jacobandersen.jorstad.ext
 
 import cloud.commandframework.context.CommandContext
 import cloud.commandframework.javacord.sender.JavacordCommandSender
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
+import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUserDam
+import dev.jacobandersen.jorstad.util.Log
 import org.javacord.api.entity.permission.Role
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
@@ -17,6 +20,7 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: 
     }
 
     val role = guild.getRoleById(roleId).orElse(null)
+    Log.info(role.toString())
     return if (role != null) { role }
     else {
         this.sender.sendErrorMessage("I couldn't find a role with that ID. $correctHint")
@@ -36,5 +40,16 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordUserFromArgument(guild: 
     else {
         this.sender.sendErrorMessage("I couldn't find a user with that ID. $correctHint")
         null
+    }
+}
+
+fun <T> CommandContext<JavacordCommandSender>.resolveListFromArgument(arg: String, mapper: (str: String) -> T): List<T> {
+    val string = this.get<String>(arg)
+    return string.split(",").map(mapper)
+}
+
+fun CommandContext<JavacordCommandSender>.resolvePrivilegesFromArgument(): List<PrivilegedUser.Privilege> {
+    return resolveListFromArgument("privileges") {
+        PrivilegedUser.Privilege.fromString(it)
     }
 }

@@ -7,10 +7,14 @@ import org.javacord.api.listener.server.ServerJoinListener
 
 class BotJoinGuildListener(private val bot: JorstadBot) : ServerJoinListener {
     override fun onServerJoin(event: ServerJoinEvent) {
+        val guild = event.server
+
+        bot.config.createGuildConfig(guild.id)
+
         bot.data.privilegedUser.addPrivilegedUser(
-            event.server.id,
-            event.server.ownerId,
-            PrivilegedUser.Level.OP
+            guild.id,
+            guild.ownerId,
+            listOf(PrivilegedUser.Privilege.ALL)
         )
     }
 }

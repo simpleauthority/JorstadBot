@@ -6,6 +6,8 @@ import org.javacord.api.listener.server.ServerLeaveListener
 
 class BotLeaveGuildListener(private val bot: JorstadBot) : ServerLeaveListener {
     override fun onServerLeave(event: ServerLeaveEvent) {
-        bot.config.deleteGuildConfig(event.server.id)
+        val guildId = event.server.id
+        bot.config.deleteGuildConfig(guildId)
+        bot.data.privilegedUser.deletePrivilegedUsers(guildId)
     }
 }

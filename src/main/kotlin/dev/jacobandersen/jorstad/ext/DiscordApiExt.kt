@@ -5,7 +5,11 @@ import cloud.commandframework.javacord.sender.JavacordCommandSender
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.server.Server
 
-fun DiscordApi.getGuildFromCtx(ctx: CommandContext<JavacordCommandSender>): Server? {
-    val guildId = ctx.sender.event.server.orElse(null)?.id ?: return null
+fun DiscordApi.resolveGuildFromContext(ctx: CommandContext<JavacordCommandSender>): Server? {
+    return resolveGuildFromSender(ctx.sender)
+}
+
+fun DiscordApi.resolveGuildFromSender(sender: JavacordCommandSender): Server? {
+    val guildId = sender.event.server.orElse(null)?.id ?: return null
     return this.getServerById(guildId).orElse(null) ?: return null
 }
