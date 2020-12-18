@@ -38,7 +38,8 @@ class CommandManager(private val bot: JorstadBot) {
             { "!" },
             BiFunction { sender, perm ->
                 val guild = bot.discord.api.resolveGuildFromSender(sender) ?: return@BiFunction false
-                val privilegedUser = bot.data.privilegedUser.findPrivilegedUser(guild.id, sender.author.id) ?: return@BiFunction false
+                val privilegedUser =
+                    bot.data.privilegedUser.findPrivilegedUser(guild.id, sender.author.id) ?: return@BiFunction false
                 return@BiFunction PrivilegedUser.Privilege.fromString(perm).hasPermission(privilegedUser)
             }
         )

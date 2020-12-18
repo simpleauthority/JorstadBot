@@ -5,8 +5,6 @@ import cloud.commandframework.arguments.StaticArgument
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.BaseSubcommand
-import dev.jacobandersen.jorstad.command.role.remove.RoleRemoveFromAllCommand
-import dev.jacobandersen.jorstad.command.role.remove.RoleRemoveFromUserCommand
 
 class RoleAddToCommand(private val bot: JorstadBot) : BaseSubcommand {
     override fun children(builder: Command.Builder<JavacordCommandSender>): List<Command.Builder<JavacordCommandSender>> {

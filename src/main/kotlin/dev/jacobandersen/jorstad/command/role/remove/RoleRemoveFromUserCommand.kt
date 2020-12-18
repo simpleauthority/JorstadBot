@@ -6,9 +6,9 @@ import cloud.commandframework.arguments.standard.StringArgument
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.TerminalSubcommand
-import dev.jacobandersen.jorstad.ext.resolveGuildFromContext
 import dev.jacobandersen.jorstad.ext.resolveDiscordRoleFromArgument
 import dev.jacobandersen.jorstad.ext.resolveDiscordUserFromArgument
+import dev.jacobandersen.jorstad.ext.resolveGuildFromContext
 
 class RoleRemoveFromUserCommand(private val bot: JorstadBot) : TerminalSubcommand {
     override fun terminal(builder: Command.Builder<JavacordCommandSender>): Command.Builder<JavacordCommandSender> {

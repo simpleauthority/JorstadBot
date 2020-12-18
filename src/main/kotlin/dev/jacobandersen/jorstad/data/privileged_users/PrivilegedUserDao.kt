@@ -2,7 +2,6 @@ package dev.jacobandersen.jorstad.data.privileged_users
 
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
-import org.jdbi.v3.sqlobject.kotlin.RegisterKotlinMapper
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
@@ -14,14 +13,22 @@ interface PrivilegedUserDao {
     fun privilegedUserExists(@Bind("guild_id") guildId: Long, @Bind("user_id") userId: Long): Boolean
 
     @SqlUpdate("insert into privileged_users(guild_id, user_id, privileges) values (:guild_id, :user_id, :privileges)")
-    fun addPrivilegedUser(@Bind("guild_id") guildId: Long, @Bind("user_id") userId: Long, @Bind("privileges") privileges: String)
+    fun addPrivilegedUser(
+        @Bind("guild_id") guildId: Long,
+        @Bind("user_id") userId: Long,
+        @Bind("privileges") privileges: String
+    )
 
     @SqlQuery("select * from privileged_users where guild_id = :guild_id and user_id = :user_id limit 1")
     @RegisterRowMapper(PrivilegedUserMapper::class)
     fun findPrivilegedUser(@Bind("guild_id") guildId: Long, @Bind("user_id") userId: Long): PrivilegedUser?
 
     @SqlUpdate("update privileged_users set privileges = :privileges where guild_id = :guild_id and user_id = :user_id")
-    fun updatePrivilegedUser(@Bind("guild_id") guildId: Long, @Bind("user_id") userId: Long, @Bind("privileges") privileges: String)
+    fun updatePrivilegedUser(
+        @Bind("guild_id") guildId: Long,
+        @Bind("user_id") userId: Long,
+        @Bind("privileges") privileges: String
+    )
 
     @SqlUpdate("delete from privileged_users where guild_id = :guild_id and user_id = :user_id")
     fun deletePrivilegedUser(@Bind("guild_id") guildId: Long, @Bind("user_id") userId: Long)

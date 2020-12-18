@@ -6,10 +6,6 @@ import dev.jacobandersen.jorstad.util.Log
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.permission.Permissions
-import org.javacord.api.listener.message.MessageCreateListener
-import org.javacord.api.listener.server.ServerJoinListener
-import org.javacord.api.listener.server.ServerLeaveListener
-import org.javacord.api.listener.server.member.ServerMemberJoinListener
 
 class DiscordManager(private val bot: JorstadBot) {
     private val builder = DiscordApiBuilder()

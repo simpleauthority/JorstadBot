@@ -3,8 +3,6 @@ package dev.jacobandersen.jorstad.ext
 import cloud.commandframework.context.CommandContext
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
-import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUserDam
-import dev.jacobandersen.jorstad.util.Log
 import org.javacord.api.entity.permission.Role
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
@@ -21,6 +19,7 @@ fun CommandContext<JavacordCommandSender>.isGuildOwner(user: User, ifYes: String
 
     return isOwner
 }
+
 fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: Server): Role? {
     val rawRole = this.get<String>("role")
 
@@ -36,8 +35,9 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: 
     }
 
     val role = guild.getRoleById(roleId).orElse(null)
-    return if (role != null) { role }
-    else {
+    return if (role != null) {
+        role
+    } else {
         this.sender.sendErrorMessage("I couldn't find a role with that ID. $correctHint")
         null
     }
@@ -58,14 +58,18 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordUserFromArgument(guild: 
     }
 
     val user = guild.getMemberById(userId).orElse(null)
-    return if (user != null) { user }
-    else {
+    return if (user != null) {
+        user
+    } else {
         this.sender.sendErrorMessage("I couldn't find a user with that ID. $correctHint")
         null
     }
 }
 
-fun <T> CommandContext<JavacordCommandSender>.resolveListFromArgument(arg: String, mapper: (str: String) -> T): List<T> {
+fun <T> CommandContext<JavacordCommandSender>.resolveListFromArgument(
+    arg: String,
+    mapper: (str: String) -> T
+): List<T> {
     val string = this.get<String>(arg)
     return string.split(",").map(mapper)
 }

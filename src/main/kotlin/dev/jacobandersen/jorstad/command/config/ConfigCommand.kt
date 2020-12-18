@@ -1,13 +1,11 @@
 package dev.jacobandersen.jorstad.command.config
 
 import cloud.commandframework.Command
-import cloud.commandframework.arguments.standard.StringArgument
 import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.BasicCommand
 import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
-import dev.jacobandersen.jorstad.ext.resolveGuildFromContext
 
 class ConfigCommand(private val bot: JorstadBot) : BasicCommand() {
     override fun construct(manager: JavacordCommandManager<JavacordCommandSender>): List<Command<JavacordCommandSender>> {

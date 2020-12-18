@@ -8,7 +8,6 @@ import org.spongepowered.configurate.kotlin.extensions.get
 import org.spongepowered.configurate.kotlin.extensions.set
 import org.spongepowered.configurate.kotlin.objectMapperFactory
 import java.io.File
-import java.lang.RuntimeException
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.reflect.KClass
@@ -71,7 +70,7 @@ class ConfigManager {
         return root.node("guilds").node(guildId.toString()).get(GuildConfig::class)
     }
 
-    fun <T : Any> readValueAtPath(clazz: KClass<T>, guildId: Long, path: String) : T? {
+    fun <T : Any> readValueAtPath(clazz: KClass<T>, guildId: Long, path: String): T? {
         if (!hasGuildConfig(guildId)) return null
         return root.node("guilds").node(guildId.toString()).node(path).get(clazz)
     }

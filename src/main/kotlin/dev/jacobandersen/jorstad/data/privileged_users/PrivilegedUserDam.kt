@@ -21,7 +21,11 @@ class PrivilegedUserDam(manager: DataManager) {
         return dao.findPrivilegedUser(guildId, userId)
     }
 
-    fun updatePrivilegedUser(guildId: Long, userId: Long, mutator: (privileges: MutableList<PrivilegedUser.Privilege>) -> List<PrivilegedUser.Privilege>) {
+    fun updatePrivilegedUser(
+        guildId: Long,
+        userId: Long,
+        mutator: (privileges: MutableList<PrivilegedUser.Privilege>) -> List<PrivilegedUser.Privilege>
+    ) {
         val user = dao.findPrivilegedUser(guildId, userId) ?: return
         dao.updatePrivilegedUser(guildId, userId, mutator.invoke(user.privileges.toMutableList()).joinToString())
     }

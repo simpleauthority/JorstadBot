@@ -6,7 +6,6 @@ import cloud.commandframework.arguments.standard.StringArgument
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.api.TerminalSubcommand
-import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
 import dev.jacobandersen.jorstad.ext.*
 
 class PrivilegedUserAddPrivilegeCommand(private val bot: JorstadBot) : TerminalSubcommand {
