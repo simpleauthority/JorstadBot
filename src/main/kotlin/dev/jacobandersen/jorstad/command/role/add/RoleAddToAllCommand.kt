@@ -19,7 +19,7 @@ class RoleAddToAllCommand(private val bot: JorstadBot) : TerminalSubcommand {
                 val role = handler.resolveDiscordRoleFromArgument(guild) ?: return@handler
 
                 guild.members.forEach { member ->
-                    if (member.isYourself) return@forEach
+                    if (member.isBot) return@forEach
                     member.addRole(role, "Adding role as requested by privileged user")
                 }
 

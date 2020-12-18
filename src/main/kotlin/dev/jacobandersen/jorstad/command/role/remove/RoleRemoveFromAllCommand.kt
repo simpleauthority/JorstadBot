@@ -19,6 +19,7 @@ class RoleRemoveFromAllCommand(private val bot: JorstadBot) : TerminalSubcommand
                 val role = handler.resolveDiscordRoleFromArgument(guild) ?: return@handler
 
                 guild.members.forEach { member ->
+                    if (member.isBot) return@forEach
                     member.removeRole(role, "Removing role as requested by privileged user")
                 }
 
