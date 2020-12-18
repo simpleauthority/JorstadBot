@@ -57,7 +57,7 @@ class ConfigManager {
      */
     fun createGuildConfig(guildId: Long) {
         if (hasGuildConfig(guildId)) return
-        setGuildConfig(guildId, GuildConfig(null))
+        setGuildConfig(guildId, GuildConfig())
     }
 
     /**
