@@ -13,7 +13,8 @@ data class PrivilegedUser(
         ALL,
         REMEMBER_FORGET_COMMAND,
         ROLE_COMMAND,
-        PRIVILEGED_USER_COMMAND;
+        PRIVILEGED_USER_COMMAND,
+        CONFIG_COMMAND;
 
         fun permission(): CommandPermission {
             return Permission.of(name)

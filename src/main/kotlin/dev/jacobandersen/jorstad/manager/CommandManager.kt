@@ -6,6 +6,7 @@ import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.jorstad.JorstadBot
 import dev.jacobandersen.jorstad.command.*
+import dev.jacobandersen.jorstad.command.config.ConfigCommand
 import dev.jacobandersen.jorstad.command.privileged_user.PrivilegedUserCommand
 import dev.jacobandersen.jorstad.command.role.RoleCommand
 import dev.jacobandersen.jorstad.data.privileged_users.PrivilegedUser
@@ -22,7 +23,8 @@ class CommandManager(private val bot: JorstadBot) {
         listOf(
             KillCommand(), LartCommand(), TacoCommand(),
             RememberCommand(bot), ForgetCommand(bot),
-            RoleCommand(bot), PrivilegedUserCommand(bot)
+            RoleCommand(bot), PrivilegedUserCommand(bot),
+            ConfigCommand(bot)
         ).forEach { registerCommand(it.construct(manager)) }
     }
 

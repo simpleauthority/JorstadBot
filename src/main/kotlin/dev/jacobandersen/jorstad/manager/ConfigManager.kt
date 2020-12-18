@@ -5,11 +5,13 @@ import dev.jacobandersen.jorstad.util.Log
 import org.spongepowered.configurate.BasicConfigurationNode
 import org.spongepowered.configurate.jackson.JacksonConfigurationLoader
 import org.spongepowered.configurate.kotlin.extensions.get
+import org.spongepowered.configurate.kotlin.extensions.set
 import org.spongepowered.configurate.kotlin.objectMapperFactory
 import java.io.File
 import java.lang.RuntimeException
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.reflect.KClass
 
 class ConfigManager {
     private val loader: JacksonConfigurationLoader
@@ -67,6 +69,17 @@ class ConfigManager {
     fun readGuildConfig(guildId: Long): GuildConfig? {
         if (!hasGuildConfig(guildId)) return null
         return root.node("guilds").node(guildId.toString()).get(GuildConfig::class)
+    }
+
+    fun <T : Any> readValueAtPath(clazz: KClass<T>, guildId: Long, path: String) : T? {
+        if (!hasGuildConfig(guildId)) return null
+        return root.node("guilds").node(guildId.toString()).node(path).get(clazz)
+    }
+
+    fun <T : Any> setValueAtPath(clazz: KClass<T>, guildId: Long, path: String, value: T?) {
+        if (!hasGuildConfig(guildId)) return
+        root.node("guilds").node(guildId.toString()).node(path).set(clazz, value)
+        loader.save(root)
     }
 
     /**

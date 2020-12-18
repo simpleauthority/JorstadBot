@@ -23,11 +23,9 @@ fun CommandContext<JavacordCommandSender>.isGuildOwner(user: User, ifYes: String
 }
 fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: Server): Role? {
     val rawRole = this.get<String>("role")
-    val roleId: Long?
 
-    val regex = Regex("<@&(\\d+)>")
-    roleId = if (regex.matches(rawRole)) {
-        regex.matchEntire(rawRole)?.groupValues?.get(1)?.toLongOrNull()
+    val roleId: Long? = if (rawRole.matchesRoleRegex()) {
+        rawRole.getIdFromRoleMention()
     } else {
         rawRole.toLongOrNull()
     }
@@ -47,11 +45,9 @@ fun CommandContext<JavacordCommandSender>.resolveDiscordRoleFromArgument(guild: 
 
 fun CommandContext<JavacordCommandSender>.resolveDiscordUserFromArgument(guild: Server): User? {
     val rawUser = this.get<String>("user")
-    val userId: Long?
 
-    val regex = Regex("<@!(\\d+)>")
-    userId = if (regex.matches(rawUser)) {
-        regex.matchEntire(rawUser)?.groupValues?.get(1)?.toLongOrNull()
+    val userId: Long? = if (rawUser.matchesUserRegex()) {
+        rawUser.getIdFromUserMention()
     } else {
         rawUser.toLongOrNull()
     }

@@ -1,10 +1,7 @@
 package dev.jacobandersen.jorstad.manager
 
 import dev.jacobandersen.jorstad.JorstadBot
-import dev.jacobandersen.jorstad.listeners.BotJoinGuildListener
-import dev.jacobandersen.jorstad.listeners.BotLeaveGuildListener
-import dev.jacobandersen.jorstad.listeners.MessageListener
-import dev.jacobandersen.jorstad.listeners.UserJoinGuildListener
+import dev.jacobandersen.jorstad.listeners.*
 import dev.jacobandersen.jorstad.util.Log
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
@@ -27,6 +24,7 @@ class DiscordManager(private val bot: JorstadBot) {
             .addServerJoinListener(BotJoinGuildListener(bot))
             .addServerLeaveListener(BotLeaveGuildListener(bot))
             .addServerMemberJoinListener(UserJoinGuildListener(bot))
+            .addServerMemberLeaveListener(UserLeaveGuildListener(bot))
             .login()
             .join()
         Log.info("Successfully connected to Discord.")
