@@ -17,7 +17,12 @@ class PrivilegedUserAddUserCommand(private val bot: DgcBot) : TerminalSubcommand
             .handler { handler ->
                 val guild = bot.discord.api.resolveGuildFromContext(handler) ?: return@handler
                 val target = handler.resolveDiscordUserFromArgument(guild) ?: return@handler
+
                 val privileges = handler.resolvePrivilegesFromArgument()
+                if (privileges.isEmpty()) {
+                    handler.sender.sendErrorMessage("I could not find any valid privileges in the provided list.")
+                    return@handler
+                }
 
                 val db = bot.data.privilegedUser
                 if (db.alreadyExists(handler.sender, guild.id, target.id)) return@handler

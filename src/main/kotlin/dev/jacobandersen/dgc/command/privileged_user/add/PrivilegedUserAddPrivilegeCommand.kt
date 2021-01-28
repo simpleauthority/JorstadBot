@@ -21,8 +21,14 @@ class PrivilegedUserAddPrivilegeCommand(private val bot: DgcBot) : TerminalSubco
                 val db = bot.data.privilegedUser
                 if (db.doesNotExist(handler.sender, guild.id, target.id)) return@handler
 
+                val privileges = handler.resolvePrivilegesFromArgument();
+                if (privileges.isEmpty()) {
+                    handler.sender.sendErrorMessage("I could not find any valid privileges in the provided list.")
+                    return@handler
+                }
+
                 db.updatePrivilegedUser(guild.id, target.id) {
-                    it.addAll(handler.resolvePrivilegesFromArgument())
+                    it.addAll(privileges)
                     return@updatePrivilegedUser it
                 }
 

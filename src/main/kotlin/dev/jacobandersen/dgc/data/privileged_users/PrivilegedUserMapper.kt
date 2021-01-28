@@ -10,7 +10,7 @@ class PrivilegedUserMapper : RowMapper<PrivilegedUser> {
             rs.getInt("id"),
             rs.getLong("guild_id"),
             rs.getLong("user_id"),
-            rs.getString("privileges").split(",").map { PrivilegedUser.Privilege.fromString(it) }
+            rs.getString("privileges").split(",").mapNotNull { PrivilegedUser.Privilege.fromString(it) }
         )
     }
 }

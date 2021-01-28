@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.0-alpha1'
     implementation 'com.zaxxer:HikariCP:3.4.5'
     implementation 'org.xerial:sqlite-jdbc:3.34.0'
+    implementation 'it.sauronsoftware.cron4j:cron4j:2.2.5'
 
     implementation platform('org.jdbi:jdbi3-bom:3.16.0')
     implementation 'org.jdbi:jdbi3-core'

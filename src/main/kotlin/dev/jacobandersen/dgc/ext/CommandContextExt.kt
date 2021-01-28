@@ -77,5 +77,5 @@ fun <T> CommandContext<JavacordCommandSender>.resolveListFromArgument(
 fun CommandContext<JavacordCommandSender>.resolvePrivilegesFromArgument(): List<PrivilegedUser.Privilege> {
     return resolveListFromArgument("privileges") {
         PrivilegedUser.Privilege.fromString(it)
-    }
+    }.filterNotNull()
 }

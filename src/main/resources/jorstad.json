@@ -1,0 +1,51 @@
+{
+  "templates": [
+    "assigns {pages} pages of {type} to {user} which is due {due}",
+    "removes {points} points from {user}'s lab for {lab_reason}"
+  ],
+  "components": {
+    "pages": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    "type": [
+      "sigfig problems",
+      "1D kinematics",
+      "1D motion graph analysis",
+      "2D kinematics",
+      "2D motion graph analysis",
+      "forces",
+      "forces with friction",
+      "rotational motion"
+    ],
+    "due": [
+      "today",
+      "tomorrow",
+      "two days from now",
+      "three days from now",
+      "four days from now",
+      "five days from now",
+      "six days from now",
+      "a week from now",
+      "a month from now",
+      "never"
+    ],
+    "points": [
+      "0.25",
+      "0.50",
+      "1.00",
+      "3.14",
+      "pi",
+      "tau",
+      "400",
+      "6969"
+    ],
+    "lab_reason": [
+      "not centering data",
+      "not italicizing variable names",
+      "not adding borders to data",
+      "not including units",
+      "using incorrect formula",
+      "using a LINE graph and not a SCATTER plot",
+      "no reason",
+      "teh lulz"
+    ]
+  }
+}

@@ -2,6 +2,7 @@ package dev.jacobandersen.dgc.data.privileged_users
 
 import cloud.commandframework.permission.CommandPermission
 import cloud.commandframework.permission.Permission
+import java.lang.IllegalArgumentException
 
 data class PrivilegedUser(
     val id: Int,
@@ -11,7 +12,7 @@ data class PrivilegedUser(
 ) {
     enum class Privilege {
         ALL,
-        REMEMBER_FORGET_COMMAND,
+        FACTOID_COMMAND,
         ROLE_COMMAND,
         PRIVILEGED_USER_COMMAND,
         CONFIG_COMMAND;
@@ -26,8 +27,12 @@ data class PrivilegedUser(
         }
 
         companion object {
-            fun fromString(str: String): Privilege {
-                return valueOf(str.trim().toUpperCase())
+            fun fromString(str: String): Privilege? {
+                return try {
+                    valueOf(str.trim().toUpperCase())
+                } catch (ignored: IllegalArgumentException) {
+                    null
+                }
             }
         }
     }

@@ -1,17 +1,19 @@
-package dev.jacobandersen.dgc.command
+package dev.jacobandersen.dgc.command.factoid
 
 import cloud.commandframework.Command
+import cloud.commandframework.arguments.StaticArgument
 import cloud.commandframework.arguments.standard.StringArgument
 import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.dgc.DgcBot
 import dev.jacobandersen.dgc.command.api.BasicCommand
+import dev.jacobandersen.dgc.command.api.TerminalSubcommand
 import dev.jacobandersen.dgc.data.privileged_users.PrivilegedUser
 
-class ForgetCommand(private val bot: DgcBot) : BasicCommand() {
-    override fun construct(manager: JavacordCommandManager<JavacordCommandSender>): List<Command<JavacordCommandSender>> {
-        return listOf(manager.commandBuilder("forget")
-            .permission(PrivilegedUser.Privilege.REMEMBER_FORGET_COMMAND.permission())
+class FactoidDelCommand(private val bot: DgcBot) : TerminalSubcommand {
+    override fun terminal(builder: Command.Builder<JavacordCommandSender>): Command.Builder<JavacordCommandSender> {
+        return builder
+            .argument(StaticArgument.of("del"))
             .argument(StringArgument.single("name"))
             .handler {
                 val guildId = it.sender.event.server.orElse(null)?.id ?: return@handler
@@ -25,6 +27,5 @@ class ForgetCommand(private val bot: DgcBot) : BasicCommand() {
                 bot.data.textCommand.deleteTextCommand(guildId, name)
                 it.sender.sendSuccessMessage("I have forgotten what to say when somebody types `!${name}`!")
             }
-            .build())
     }
 }

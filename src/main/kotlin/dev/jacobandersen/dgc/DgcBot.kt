@@ -1,15 +1,13 @@
 package dev.jacobandersen.dgc
 
 import dev.jacobandersen.dgc.data.privileged_users.PrivilegedUser
-import dev.jacobandersen.dgc.manager.CommandManager
-import dev.jacobandersen.dgc.manager.ConfigManager
-import dev.jacobandersen.dgc.manager.DataManager
-import dev.jacobandersen.dgc.manager.DiscordManager
+import dev.jacobandersen.dgc.manager.*
 import dev.jacobandersen.dgc.util.Log
 
 class DgcBot {
     val discord = DiscordManager(this)
     val command = CommandManager(this)
+    val tasks = TaskManager(this)
     val config = ConfigManager()
     val data = DataManager()
 
@@ -17,6 +15,7 @@ class DgcBot {
         Log.info("Booting Dedicated Guidance Cyborg...")
         handleLogin()
         registerCommands()
+        startTasks()
         checkGuildConfigs()
         checkGuildOwnersPrivileged()
         Log.info("Dedicated Guidance Cyborg is now running.")
@@ -25,6 +24,7 @@ class DgcBot {
     fun stop() {
         discord.logout()
         data.stop()
+        tasks.stop()
     }
 
     private fun handleLogin() {
@@ -35,6 +35,11 @@ class DgcBot {
     private fun registerCommands() {
         Log.info("Registering commands...")
         command.registerCommands(discord)
+    }
+
+    private fun startTasks() {
+        tasks.registerTasks()
+        tasks.start()
     }
 
     private fun checkGuildConfigs() {

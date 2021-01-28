@@ -7,6 +7,9 @@ import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.dgc.DgcBot
 import dev.jacobandersen.dgc.command.*
 import dev.jacobandersen.dgc.command.config.ConfigCommand
+import dev.jacobandersen.dgc.command.factoid.FactoidAddCommand
+import dev.jacobandersen.dgc.command.factoid.FactoidCommand
+import dev.jacobandersen.dgc.command.factoid.FactoidDelCommand
 import dev.jacobandersen.dgc.command.privileged_user.PrivilegedUserCommand
 import dev.jacobandersen.dgc.command.role.RoleCommand
 import dev.jacobandersen.dgc.data.privileged_users.PrivilegedUser
@@ -22,9 +25,8 @@ class CommandManager(private val bot: DgcBot) {
         initialize(discord)
         listOf(
             KillCommand(), LartCommand(), TacoCommand(),
-            RememberCommand(bot), ForgetCommand(bot),
-            RoleCommand(bot), PrivilegedUserCommand(bot),
-            ConfigCommand(bot)
+            JorstadCommand(), FactoidCommand(bot), RoleCommand(bot),
+            PrivilegedUserCommand(bot), ConfigCommand(bot)
         ).forEach { registerCommand(it.construct(manager)) }
     }
 
@@ -40,7 +42,7 @@ class CommandManager(private val bot: DgcBot) {
                 val guild = bot.discord.api.resolveGuildFromSender(sender) ?: return@BiFunction false
                 val privilegedUser =
                     bot.data.privilegedUser.findPrivilegedUser(guild.id, sender.author.id) ?: return@BiFunction false
-                return@BiFunction PrivilegedUser.Privilege.fromString(perm).hasPermission(privilegedUser)
+                return@BiFunction PrivilegedUser.Privilege.fromString(perm)?.hasPermission(privilegedUser) ?: false
             }
         )
     }
