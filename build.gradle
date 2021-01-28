@@ -31,7 +31,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'dev.jacobandersen.jorstad.JorstadBotKt'
+        attributes 'Main-Class': 'dev.jacobandersen.dgc.bootstrap.BootstrapKt'
         attributes 'Multi-Release': 'true'
     }
 
@@ -40,7 +40,7 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = "jorstad-bot.jar"
+    archiveFileName = "dgc.jar"
 }
 
 compileKotlin {
