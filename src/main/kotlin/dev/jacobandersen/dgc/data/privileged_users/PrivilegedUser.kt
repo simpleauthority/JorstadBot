@@ -2,7 +2,6 @@ package dev.jacobandersen.dgc.data.privileged_users
 
 import cloud.commandframework.permission.CommandPermission
 import cloud.commandframework.permission.Permission
-import java.lang.IllegalArgumentException
 
 data class PrivilegedUser(
     val id: Int,

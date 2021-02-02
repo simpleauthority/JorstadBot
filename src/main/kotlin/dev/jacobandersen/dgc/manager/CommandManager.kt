@@ -6,10 +6,9 @@ import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.dgc.DgcBot
 import dev.jacobandersen.dgc.command.*
+import dev.jacobandersen.dgc.command.activity.ActivityCommand
 import dev.jacobandersen.dgc.command.config.ConfigCommand
-import dev.jacobandersen.dgc.command.factoid.FactoidAddCommand
 import dev.jacobandersen.dgc.command.factoid.FactoidCommand
-import dev.jacobandersen.dgc.command.factoid.FactoidDelCommand
 import dev.jacobandersen.dgc.command.privileged_user.PrivilegedUserCommand
 import dev.jacobandersen.dgc.command.role.RoleCommand
 import dev.jacobandersen.dgc.data.privileged_users.PrivilegedUser
@@ -26,7 +25,7 @@ class CommandManager(private val bot: DgcBot) {
         listOf(
             KillCommand(), LartCommand(), TacoCommand(),
             JorstadCommand(), FactoidCommand(bot), RoleCommand(bot),
-            PrivilegedUserCommand(bot), ConfigCommand(bot)
+            PrivilegedUserCommand(bot), ConfigCommand(bot), ActivityCommand(bot)
         ).forEach { registerCommand(it.construct(manager)) }
     }
 

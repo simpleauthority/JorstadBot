@@ -6,7 +6,6 @@ import cloud.commandframework.javacord.JavacordCommandManager
 import cloud.commandframework.javacord.sender.JavacordCommandSender
 import dev.jacobandersen.dgc.command.api.BasicCommand
 import dev.jacobandersen.dgc.module.JorstadModule
-import dev.jacobandersen.dgc.module.KillModule
 import org.javacord.api.entity.message.MessageBuilder
 import org.javacord.api.entity.message.MessageDecoration
 

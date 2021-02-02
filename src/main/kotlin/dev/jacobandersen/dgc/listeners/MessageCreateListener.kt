@@ -4,7 +4,7 @@ import dev.jacobandersen.dgc.DgcBot
 import org.javacord.api.event.message.MessageCreateEvent
 import org.javacord.api.listener.message.MessageCreateListener
 
-class MessageListener(private val bot: DgcBot) : MessageCreateListener {
+class MessageCreateListener(private val bot: DgcBot) : MessageCreateListener {
     override fun onMessageCreate(event: MessageCreateEvent) {
         val message = event.message.content
         val guildId = event.server.orElse(null)?.id ?: return
@@ -17,5 +17,9 @@ class MessageListener(private val bot: DgcBot) : MessageCreateListener {
                 event.channel.sendMessage(command.output)
             }
         }
+
+
+        val author = event.message.userAuthor.orElse(null) ?: return
+        bot.data.activityTracker.updateByUserId(author.id) { it.track(event) }
     }
 }

@@ -16,7 +16,8 @@ class DiscordManager(private val bot: DgcBot) {
         api = builder
             .setToken(System.getenv("DGC_BOT_TOKEN"))
             .setAllIntents()
-            .addMessageCreateListener(MessageListener(bot))
+            .addMessageCreateListener(MessageCreateListener(bot))
+            .addMessageDeleteListener(MessageDeleteListener(bot))
             .addServerJoinListener(BotJoinGuildListener(bot))
             .addServerLeaveListener(BotLeaveGuildListener(bot))
             .addServerMemberJoinListener(UserJoinGuildListener(bot))

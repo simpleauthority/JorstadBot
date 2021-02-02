@@ -22,5 +22,6 @@ class UserJoinGuildListener(private val bot: DgcBot) : ServerMemberJoinListener 
             channel.sendMessage(welcomeMessage.replace("{user}", event.user.mentionTag))
         }
 
+        bot.data.activityTracker.createByUserId(event.user.id)
     }
 }

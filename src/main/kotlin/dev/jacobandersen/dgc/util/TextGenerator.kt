@@ -14,11 +14,7 @@ object TextGenerator {
 
         components.forEach { (key, value) ->
             while (message.contains("{${key}}")) {
-                Log.info("Key is $key")
-                Log.info("Value is $value")
                 var random = chooseRandom(value)
-                Log.info("Random is $random")
-                Log.info("Message is $message")
                 while (message.contains(random)) {
                     random = chooseRandom(value)
                 }

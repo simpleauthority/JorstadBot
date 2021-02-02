@@ -2,6 +2,7 @@ package dev.jacobandersen.dgc.manager
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import dev.jacobandersen.dgc.data.activity_tracker.ActivityTrackerDam
 import dev.jacobandersen.dgc.data.privileged_users.PrivilegedUserDam
 import dev.jacobandersen.dgc.data.text_commands.TextCommandDam
 import dev.jacobandersen.dgc.util.Log
@@ -14,6 +15,7 @@ class DataManager {
     val jdbi: Jdbi
     val textCommand: TextCommandDam
     val privilegedUser: PrivilegedUserDam
+    val activityTracker: ActivityTrackerDam
 
     init {
         Log.info("Configuring data storage system...")
@@ -30,10 +32,12 @@ class DataManager {
         Log.info("Creating data accessors...")
         textCommand = TextCommandDam(this)
         privilegedUser = PrivilegedUserDam(this)
+        activityTracker = ActivityTrackerDam(this)
 
         Log.info("Creating data containers (if necessary)...")
         textCommand.createContainer()
         privilegedUser.createContainer()
+        activityTracker.createContainer()
     }
 
     fun stop() {

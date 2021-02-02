@@ -13,5 +13,7 @@ class UserLeaveGuildListener(private val bot: DgcBot) : ServerMemberLeaveListene
             val channel = event.server.systemChannel.orElse(null) ?: return
             channel.sendMessage(leaveMessage.replace("{user}", event.user.mentionTag))
         }
+
+        bot.data.activityTracker.deleteByUserId(event.user.id)
     }
 }
